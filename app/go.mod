@@ -1,6 +1,6 @@
 module example.com/app
 
-go 1.22.1
+go 1.22.0
 
 replace example.com/practice => ../practice
 
