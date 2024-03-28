@@ -1,4 +1,4 @@
-package control_structure
+package control_structures
 
 import (
 	"errors"
