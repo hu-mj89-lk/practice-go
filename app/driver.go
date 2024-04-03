@@ -4,37 +4,49 @@ import (
 	"fmt"
 	"log"
 	"math/rand"
+	"reflect"
+	"runtime"
 
 	"example.com/practice/control_structures"
 	"example.com/practice/functions"
 	types "example.com/practice/types"
 )
 
+func execute(f func()) {
+	defer fmt.Println()
+
+	valueF := reflect.ValueOf(f)
+	funcF := runtime.FuncForPC(valueF.Pointer())
+	nameF := funcF.Name()
+	fmt.Printf("##### %s #####\n", nameF)
+
+	f()
+}
+
 func main() {
 	fmt.Println()
-	
+
 	// season of a month
-	fmt.Println("##### executeSeasonOfTheMonth #####")
-	executeSeasonOfTheMonth()
+	execute(seasonOfTheMonth)
 
 	// all seasons
-	fmt.Println("##### executeSeasonsOfAllMonths #####")
-	executeSeasonsOfAllMonths()
+	execute(seasonsOfAllMonths)
 
-	// try closures
-	fmt.Println("##### executeClosures #####")
-	executeClosures()
+	// play with closures
+	execute(playWithClosures)
 
-	// try closures
-	fmt.Println("##### createSliceOfCustomType #####")
-	createSliceOfCustomType()
+	// play with custom types
+	execute(playWithCustomType)
 
+	// play with arrays
+	execute(playWithArrays)
+
+	// play with slices
+	execute(playWithSlices)
 }
 
 // season of the month
-func executeSeasonOfTheMonth() {
-	defer fmt.Println()
-
+func seasonOfTheMonth() {
 	month := rand.Intn(20)
 	season, err := control_structures.Season(month)
 	if err != nil {
@@ -44,9 +56,7 @@ func executeSeasonOfTheMonth() {
 	}
 }
 
-func executeSeasonsOfAllMonths() {
-	defer fmt.Println()
-	
+func seasonsOfAllMonths() {
 	seasons := func() map[int]string {
 		result := make(map[int]string)
 		for i := 1; i <= 12; i++ {
@@ -58,9 +68,7 @@ func executeSeasonsOfAllMonths() {
 	fmt.Println(seasons)
 }
 
-func executeClosures() {
-	defer fmt.Println()
-	
+func playWithClosures() {
 	sl := []int{1, 2, 3, 4, 5, 6, 7}
 
 	even, odd := functions.OddEven(sl)
@@ -70,12 +78,18 @@ func executeClosures() {
 	fmt.Println("Bigger : ", bigger, " | Smaller : ", smaller)
 }
 
-func createSliceOfCustomType() {
-	defer fmt.Println()
-	
-	var slStudents []types.Student = []types.Student{
-		2: {Name: "Jitesh", Age: 35},
-		4: {Name: "Robin", Age: 34},
-	}
-	fmt.Print(slStudents)
+func playWithCustomType() {
+	stud1 := types.Student{Name: "Jitesh", Age: 35}
+	fmt.Println(stud1)
+}
+
+func playWithArrays() {
+	arr1 := [5]int{1, 2, 3}
+
+	fmt.Printf("arr1 | type : %t, value : %v, length : %d, capacity : %d\n", arr1, arr1, len(arr1), cap(arr1))
+}
+
+func playWithSlices() {
+	var sl1 []int
+	fmt.Printf("sl1 | type : %t, value : %v, length : %d, capacity : %d\n", sl1, sl1, len(sl1), cap(sl1))
 }
